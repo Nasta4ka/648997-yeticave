@@ -43,6 +43,7 @@ $categories = array("Доски и лыжи", "Крепления", "Ботин�
 
  function format_price($price)
 {
+    $price = ceil($price);
     if ($price >= 1000) {
         $price = number_format($price, 0, '', ' ');
     }
@@ -126,8 +127,7 @@ $categories = array("Доски и лыжи", "Крепления", "Ботин�
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost">
-                                <?=$final_price = format_price(ceil($item['price'])); ?>
-                                <b class="rub">р</b></span>
+                                <?=format_price($item['price']); ?>
                         </div>
                         <div class="lot__timer timer">
                             12:23
