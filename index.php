@@ -40,7 +40,18 @@ $advert = [
     ]
 ];
 $categories = array("Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное");
+
+ function format_price($price)
+{
+    $price = ceil($price);
+    if ($price >= 1000) {
+        $price = number_format($price, 0, '', ' ');
+    }
+    return $price . " ₽";
+}
+;
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -115,7 +126,8 @@ $categories = array("Доски и лыжи", "Крепления", "Ботин�
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$item['price']; ?><b class="rub">р</b></span>
+                            <span class="lot__cost">
+                                <?=format_price($item['price']); ?>
                         </div>
                         <div class="lot__timer timer">
                             12:23
