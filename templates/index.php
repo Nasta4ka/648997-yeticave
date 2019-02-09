@@ -32,7 +32,7 @@
                                 <?=format_price($item['price']); ?>
                             </div>
                             <div class="lot__timer timer">
-                                12:23
+                                <?= $remaining_time; ?>
                             </div>
                         </div>
                     </div>

@@ -57,9 +57,19 @@ function esc($str) {
     return $text;
 };
 
- $page_content = include_template('index.php',
+date_default_timezone_set("Europe/Moscow");
+$ts = time();
+$ts_midnight = strtotime('tomorrow');
+$dt = $ts_midnight - time();
+$secs_to_midnight = $ts_midnight - time();
+$hours = floor($secs_to_midnight / 3600);
+$minutes = floor(($secs_to_midnight % 3600) / 60);
+$remaining_time = $hours . " " . $minutes;
+
+$page_content = include_template('index.php',
      ['categories' => $categories,
-         'advert' => $advert]);
+         'advert' => $advert,
+         'remaining_time' => $remaining_time]);
  $layout_content = include_template("layout.php",
      ['page_content' => $page_content,
          'categories' => $categories,
