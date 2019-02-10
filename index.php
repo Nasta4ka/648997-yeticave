@@ -1,11 +1,11 @@
 <?php
-require_once('functions.php');
+require_once'functions.php';
 
 $is_auth = rand(0, 1);
 $user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $advert = [
    [
-        "name" => "2014 Rossignol District Snowboard",
+        "name" => "Rossignol District Snowboard",
         "category" => "Доски и лыжи",
         "price" => 10999,
         "pic_url" => "img/lot-1.jpg"
@@ -43,19 +43,6 @@ $advert = [
 ];
 $categories = array("Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное");
 
- function format_price($price)
-{
-    $price = ceil($price);
-    if ($price >= 1000) {
-        $price = number_format($price, 0, '', ' ');
-    }
-    return $price . " ₽";
-};
-
-function esc($str) {
-    $text = htmlspecialchars($str);
-    return $text;
-};
 
 date_default_timezone_set("Europe/Moscow");
 $ts = time();
@@ -64,7 +51,7 @@ $dt = $ts_midnight - time();
 $secs_to_midnight = $ts_midnight - time();
 $hours = floor($secs_to_midnight / 3600);
 $minutes = floor(($secs_to_midnight % 3600) / 60);
-$remaining_time = $hours . " " . $minutes;
+$remaining_time = $hours . ":" . $minutes;
 
 $page_content = include_template('index.php',
      ['categories' => $categories,
@@ -77,7 +64,5 @@ $page_content = include_template('index.php',
          'is_auth' => $is_auth,
          'user_name' => $user_name]);
 print($layout_content);
-
-
 
 ?>
