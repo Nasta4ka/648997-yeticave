@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= $title;?></title>
+    <title><?= $title; ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -25,7 +25,7 @@
 
                 <?php if($is_auth === 1): ?>
                     <div class="user-menu__logged">
-                        <p><?=$user_name;?></p>
+                        <p><?= $user_name; ?></p>
                     </div>
                 <?php else: ?>
                     <ul class="user-menu__list">
@@ -51,7 +51,7 @@
             <!--заполните этот список из массива категорий-->
             <?php foreach ($categories as $value): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=$value;?></a>
+                    <a href="pages/all-lots.html"><?= $value; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
