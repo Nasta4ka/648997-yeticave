@@ -1,5 +1,5 @@
-CREATE DATABASE yeticave CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE yeticave;
+CREATE DATABASE `648997-yeticave` CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `648997-yeticave`;
 
 CREATE TABLE categories (
 id INT AUTO_INCREMENT PRIMARY KEY,
