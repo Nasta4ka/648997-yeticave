@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= esc($lot['title']); ?></h2></title>
+    <title><?= $title; ?></title>
     <link href="../css/normalize.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
 </head>
@@ -22,39 +22,35 @@
             </form>
             <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
             <nav class="user-menu">
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="sign-up.html">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="login.html">Вход</a>
-                    </li>
-                </ul>
+
+                <?php if($is_auth === 1): ?>
+                    <div class="user-menu__logged">
+                        <p><?= $user_name; ?></p>
+                    </div>
+                <?php else: ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="#">Регистрация</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="#">Вход</a>
+                        </li>
+                    </ul>
+                <?php endif; ?>
+
             </nav>
         </div>
     </header>
 
-    <main>
+<main>
         <nav class="nav">
             <ul class="nav__list container">
-                <li class="nav__item">
-                    <a href="all-lots.html">Доски и лыжи</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Крепления</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Ботинки</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Одежда</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Инструменты</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Разное</a>
-                </li>
+                <!--заполните этот список из массива категорий-->
+                <?php foreach ($categories as $value): ?>
+                    <li class="nav__item">
+                        <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </nav>
         <section class="lot-item container">
@@ -70,21 +66,21 @@
                 <div class="lot-item__right">
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer">
-                            <?= esc($lot['end_date']); ?>
+                            <?= lot_expire($lot['end_time']); ?>
                         </div>
                         <div class="lot-item__cost-state">
                             <div class="lot-item__rate">
                                 <span class="lot-item__amount">Текущая цена</span>
-                                <span class="lot-item__cost"><?= esc($lot['price']); ?></span>
+                                <span class="lot-item__cost"><?= esc($lot['max_price']); ?></span>
                             </div>
                             <div class="lot-item__min-cost">
-                                Мин. ставка <span><?= esc($lot['rate_step']) ; ?></span>
+                                Мин. ставка <span><?= esc($lot['rate'] + $lot['max_price'] ) ; ?></span>
                             </div>
                         </div>
                         <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
                             <p class="lot-item__form-item form__item form__item--invalid">
                                 <label for="cost">Ваша ставка</label>
-                                <input id="cost" type="text" name="cost" placeholder="12 000">
+                                <input id="cost" type="text" name="cost" placeholder="<?= esc($lot['rate'] + $lot['max_price'] ) ; ?>">
                                 <span class="form__error">Введите наименование лота</span>
                             </p>
                             <button type="submit" class="button">Сделать ставку</button>
@@ -149,30 +145,17 @@
             </div>
         </section>
     </main>
-
 </div>
 
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+            <!--заполните этот список из массива категорий-->
+            <?php foreach ($categories as $value): ?>
+                <li class="nav__item">
+                    <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">

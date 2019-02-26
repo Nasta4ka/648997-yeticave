@@ -32,7 +32,7 @@
                                 <?=format_price($item['start_price']); ?>
                             </div>
                             <div class="lot__timer timer">
-                                <?= $remaining_time; ?>
+                                <?= lot_expire($item['end_time']); ?>
                             </div>
                         </div>
                     </div>

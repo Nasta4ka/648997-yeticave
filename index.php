@@ -2,7 +2,6 @@
 date_default_timezone_set('Europe/Moscow');
 require_once 'init.php';
 require_once 'functions.php';
-require_once 'lot.php';
 
 $is_auth = rand(0, 1);
 $user_name = 'Nasta4ka'; // укажите здесь ваше имя
@@ -11,8 +10,8 @@ $advert = get_adverts($con);
 
 $page_content = include_template('index.php',
     ['categories' => $categories,
-        'advert' => $advert,
-        'remaining_time' => lot_expire()]);
+        'advert' => $advert
+        ]);
 
 $layout_content = include_template("layout.php",
     ['page_content' => $page_content,
