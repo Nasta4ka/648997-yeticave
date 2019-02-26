@@ -87,6 +87,7 @@ function get_adverts($con) {
     $advert = [];
     $sql = "
         SELECT 
+               lots.id,
                lots.title, 
                lots.start_price,
                lots.picture,
@@ -109,4 +110,19 @@ function get_adverts($con) {
         $advert = mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
     return $advert;
+
+}
+
+
+/** Функция выводит данные из бд
+ * @param $sql
+ * @param $con
+ * @return array/null
+ */
+function get_assoc($sql, $con) {
+    $result = mysqli_query($con, $sql);
+
+    if ($result) {
+        return mysqli_fetch_assoc($result);
+    }
 }
