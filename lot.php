@@ -3,8 +3,6 @@ require_once 'init.php';
 require_once 'functions.php';
 $categories = get_categories($con);
 
-
-
 if (!isset($_GET['lot_id'])) {
       $lot_content = include_template("error.php",
 

@@ -7,7 +7,6 @@ $is_auth = rand(0, 1);
 $user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $categories = get_categories($con);
 $advert = get_adverts($con);
-
 $page_content = include_template('index.php',
     ['categories' => $categories,
         'advert' => $advert

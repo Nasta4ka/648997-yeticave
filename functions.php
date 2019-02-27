@@ -141,56 +141,26 @@ function get_lot_id($con, $lot_id) {
     return $advert;
 }
 
-
-
-/** Функция выводит данные из бд
- * @param $sql
- * @param $con
- * @return array/null
- */
-function get_assoc($sql, $con) {
-    $result = mysqli_query($con, $sql);
-
-    if ($result) {
-        return mysqli_fetch_assoc($result);
+function get_category_id($con, $category_name) {
+    $value = [];
+    $sql = "
+        SELECT 
+               categories.*
+               
+        FROM 
+               categories
+        WHERE 
+               categories.category = ?
+        GROUP BY 
+              categories.id
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$category_name]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $value = mysqli_fetch_assoc($res);
     }
+    $category_id = $value['id'];
+
+    return $category_id;
 }
-
-// функции для нового лота
-
-/** Функция осуществляет проверку стоимости и шага ставки
- * @param $value
- * @return bool
- */
-function check_price($value) {
-    $number = floatval($value);
-    $is_number = is_numeric($number);
-    $is_positive = $number >= 0;
-
-    return ($is_number && $is_positive);
-}
-
-
-/** Функция для поиска ошибок в отправленной форме
- * @param $lot
- * @param $required
- * @param $rules
- * @return array
- */
-
-function find_errors($lot, $required) {
-    $errors = [];
-    $errors_list = [
-        'lot-name' => 'Введите наименование лота',
-        'category' => 'Выберите категорию',
-        'message' => 'Напишите описание лота',
-        'lot-rate' => 'Введите начальную цену',
-        'lot-step' => 'Введите шаг ставки',
-        'lot-date' => 'Введите дату завершения торгов',
-        'bottom' => 'Пожалуйста, исправьте ошибки в форме.'
-    ];
-    foreach ($lot as $key => $value) {
-        if (in_array($key, $required) && $value = '') {
-            $errors[$key] = $errors_list[$key];
-        }}
-    return $errors;}
