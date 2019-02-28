@@ -141,8 +141,7 @@ function get_lot_id($con, $lot_id) {
     return $advert;
 }
 
-function get_category_id($con, $category_name) {
-    $value = [];
+function check_category($con, $category_id) {
     $sql = "
         SELECT 
                categories.*
@@ -150,17 +149,14 @@ function get_category_id($con, $category_name) {
         FROM 
                categories
         WHERE 
-               categories.category = ?
-        GROUP BY 
-              categories.id
+               categories.id = ?
     ";
-    $stmt = db_get_prepare_stmt($con, $sql, [$category_name]);
+    $stmt = db_get_prepare_stmt($con, $sql, [$category_id]);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {
-        $value = mysqli_fetch_assoc($res);
+        return mysqli_num_rows($res) > 0;
     }
-    $category_id = $value['id'];
 
-    return $category_id;
+    return false;
 }

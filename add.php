@@ -1,73 +1,67 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
+$is_auth = rand(0, 1);
+$user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $categories =  get_categories($con);
+$lot = [];
+$errors = [];
 
 
 if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
-    $required = ['lot-name', 'category', 'message', 'image', 'lot-rate', 'lot-step', 'lot-date'];
+    $required = ['title', 'category_id', 'description', 'picture', 'start_price', 'rate', 'end_time'];
     $errors_list = [
-        'lot-name' => 'Введите наименование лота',
-        'category' => 'Выберите категорию',
-        'message' => 'Напишите описание лота',
-        'image' => 'Загрузите изображение в формате png/jpeg',
-        'lot-rate' => 'Введите начальную цену',
-        'lot-step' => 'Введите шаг ставки',
-        'lot-date' => 'Введите дату завершения торгов',
+        'title' => 'Введите наименование лота',
+        'category_id' => 'Выберите категорию',
+        'description' => 'Напишите описание лота',
+        'picture' => 'Загрузите изображение в формате png/jpeg',
+        'start_price' => 'Введите начальную цену',
+        'rate' => 'Введите шаг ставки',
+        'end_time' => 'Введите дату завершения торгов',
         'bottom' => 'Пожалуйста, исправьте ошибки в форме.'
     ];
-    $errors = [];
-    $lot_name = $lot['lot-name'];
-    $lot_rate = intval($lot['lot-rate']);
-    $lot_step = intval($lot['lot-step']);
-    $lot_date = $lot['lot-date'];
 
-    if (!is_numeric($lot_rate) && !$lot_rate > 0) {
-        $errors['lot-rate'] = $errors_list['lot_rate'];
-        exit;
-    }
-    if (!is_numeric($lot_step) && !$lot_step > 0) {
-        $errors['lot-step'] = $errors_list['lot-step'];
-        exit;
-    }
-
-    if (isset($_FILES['image']['name'])) {
-        $tmp_name = $_FILES['image']['tmp_name'];
-        $path = $_FILES['image']['name'];
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png') {
-            $errors['image'] = $errors_list['image'];
-        } else {
-            move_uploaded_file($tmp_name, 'img/' . $path);
-            $lot['image'] = $path;
-        }
-    } else {
-        $errors['image'] = $errors_list['image'];
-    }
 
     foreach ($lot as $key => $value) {
-        if ($value = '') {
+        if (empty($value)) {
             $errors[$key] = $errors_list[$key];
         }
     }
 
-    if (count($errors)) {
-        $add_content = include_template('add.php', [
-            'lot' => $lot,
-            'errors' => $errors,
-            'categories' => $categories]);
+    if (!check_category($con, $lot['category_id'])) {
+        $errors['category_id'] = "Выберите категорию";
+    }
+    if (intval($lot['start_price']) < 0) {
+        $errors['start_price'] = "Введите положительное число";
+    }
+    if (intval($lot['rate']) < 0) {
+        $errors['rate'] = "Введите положительное число";
+    }
+
+    if (strtotime($lot['end_time']) - time() <= 60 * 60 * 24) {
+        $errors['end_time'] = "Указанная дата должна быть больше текущей даты хотя бы на один день.";
+    }
+
+    if (empty($_FILES['picture']['name'])) {
+        $errors['picture'] = $errors_list['picture'];
     } else {
-        $category_name = $lot['category'];
-        $category_id = get_category_id($con, $category_name);
+        $file_type = mime_content_type($_FILES['picture']['tmp_name']);
+        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png' && $file_type !== 'image/jpg') {
+            $errors['picture'] = $errors_list['picture'];
+        }
+    }
 
-        $lot_data = [$lot['lot-name'], $category_id, $lot['message'], $path, $lot_rate, $lot_step, $lot['lot-date']];
-        var_dump($lot_data);
+    if (count($errors) === 0) {
+        $tmp_name = $_FILES['picture']['tmp_name'];
+        $path = $_FILES['picture']['name'];
 
+        move_uploaded_file($tmp_name, 'img/' . $path);
+        $lot['picture'] = 'img/' . $path;
+        $lot_data = [$lot['title'], $lot['category_id'], $lot['description'], $path, $lot['start_price'], $lot['rate'], $lot['end_time']];
 
-        $sql = "INSERT INTO lots (title, category_id, description, picture, start_price, rate, end_time) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($con, $sql, [$lot_data]);
+        $sql = "INSERT INTO lots (title, category_id, description, picture, start_price, rate, end_time, author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, 1)";
+        $stmt = db_get_prepare_stmt($con, $sql, $lot_data);
         mysqli_stmt_execute($stmt);
         $res = mysqli_stmt_get_result($stmt);
 
@@ -75,12 +69,15 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $lot_id = mysqli_insert_id($con);
             header('Location: lot.php?lot_id=' . $lot_id);
         }
+
     }
 }
 
-else {
 
     $add_content = include_template('add.php', [
-        'categories' => $categories]);
+        'categories' => $categories,
+        'errors' => $errors,
+        'is_auth' => $is_auth,
+        'user_name' => $user_name,
+        'lot' => $lot]);
     print($add_content);
-}
