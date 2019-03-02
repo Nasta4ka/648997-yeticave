@@ -58,18 +58,16 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         move_uploaded_file($tmp_name, 'img/' . $path);
         $lot['picture'] = 'img/' . $path;
-        $lot_data = [$lot['title'], $lot['category_id'], $lot['description'], $path, $lot['start_price'], $lot['rate'], $lot['end_time']];
+        $lot_data = [$lot['title'], $lot['category_id'], $lot['description'], $lot['picture'], $lot['start_price'], $lot['rate'], $lot['end_time']];
 
         $sql = "INSERT INTO lots (title, category_id, description, picture, start_price, rate, end_time, author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, 1)";
         $stmt = db_get_prepare_stmt($con, $sql, $lot_data);
         mysqli_stmt_execute($stmt);
 
-        $lot_id = mysqli_insert_id($con);
-        header('Location: lot.php?lot_id=' . $lot_id);
+            $lot_id = mysqli_insert_id($con);
+            header('Location: lot.php?lot_id=' . $lot_id);
     }
 }
-
-
 
 
     $add_content = include_template('add.php', [
