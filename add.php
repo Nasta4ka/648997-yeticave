@@ -22,7 +22,6 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'bottom' => 'Пожалуйста, исправьте ошибки в форме.'
     ];
 
-
     foreach ($lot as $key => $value) {
         if (empty($value)) {
             $errors[$key] = $errors_list[$key];

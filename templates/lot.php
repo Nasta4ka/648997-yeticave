@@ -22,7 +22,6 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-
                 <?php if($is_auth === 1): ?>
                     <div class="user-menu__logged">
                         <p><?= $user_name; ?></p>
@@ -30,10 +29,10 @@
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="#">Регистрация</a>
+                            <a href="sign_up.php">Регистрация</a>
                         </li>
                         <li class="user-menu__item">
-                            <a href="#">Вход</a>
+                            <a href="login.php">Вход</a>
                         </li>
                     </ul>
                 <?php endif; ?>
@@ -59,6 +58,8 @@
                 <div class="lot-item__left">
                     <div class="lot-item__image">
                         <img src="<?= esc($lot['picture']); ?>" width="730" height="548" alt="изображение">
+
+
                     </div>
                     <p class="lot-item__category">Категория: <span><?= esc($lot['category']); ?></span></p>
                     <p class="lot-item__description"><?= esc($lot['description']); ?></p>

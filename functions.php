@@ -160,3 +160,24 @@ function check_category($con, $category_id) {
 
     return false;
 }
+
+//
+function check_email($con, $email)
+{
+    $sql = "
+        SELECT 
+               users.email
+               
+        FROM 
+               users
+        WHERE 
+               users.email = ?
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $email = mysqli_fetch_assoc($res);
+    }
+    return $email;
+}

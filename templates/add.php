@@ -13,7 +13,7 @@
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo" href="index.html">
+            <a class="main-header__logo" href="index.php">
                 <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -22,14 +22,21 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="sign-up.html">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="login.html">Вход</a>
-                    </li>
-                </ul>
+                <?php if($is_auth === 1): ?>
+                    <div class="user-menu__logged">
+                        <p><?= $user_name; ?></p>
+                    </div>
+                <?php else: ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="sign_up.php">Регистрация</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="login.php">Вход</a>
+                        </li>
+                    </ul>
+                <?php endif; ?>
+
             </nav>
         </div>
     </header>
@@ -37,24 +44,11 @@
     <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+            <?php foreach ($categories as $value): ?>
+                <li class="nav__item">
+                    <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </nav>
 

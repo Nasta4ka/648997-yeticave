@@ -1,6 +1,8 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
+$is_auth = rand(0, 1);
+$user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $categories = get_categories($con);
 
 if (!isset($_GET['lot_id'])) {
