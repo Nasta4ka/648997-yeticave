@@ -24,7 +24,7 @@
                     </div>
                     <div class="lot__info">
                         <span class="lot__category"><?= esc($item['category']); ?></span>
-                        <h3 class="lot__title"><a class="text-link" href="lot.php?lot_id=<?= intval($item['id']) ; ?> "> <?= esc($item['title']); ?> </a></h3>
+                        <h3 class="lot__title"><a class="text-link" href="lot.php?lot_id=<?= $item['id'] ; ?> "> <?= esc($item['title']); ?> </a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>
@@ -32,7 +32,7 @@
                                 <?=format_price($item['start_price']); ?>
                             </div>
                             <div class="lot__timer timer">
-                                <?= $remaining_time; ?>
+                                <?= lot_expire($item['end_time']); ?>
                             </div>
                         </div>
                     </div>

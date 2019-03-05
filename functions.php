@@ -1,4 +1,7 @@
 <?php
+require_once 'mysql_helper.php';
+
+
 /** Функция подключает шаблоны к сценарию
  * @param string $name - ссылка на шаблон
  * @param array $data - массив с данными для подключаемого шаблона
@@ -48,9 +51,8 @@ return $text;
  * @return string - время в формате ЧЧ:MM
  */
 
-function lot_expire(){
-
-    $ts_midnight = strtotime('tomorrow');
+function lot_expire($value){
+    $ts_midnight = strtotime($value);
     $secs_to_midnight = $ts_midnight - time();
     $hours = floor($secs_to_midnight / 3600);
     if ($hours <= 9)  {
@@ -87,10 +89,7 @@ function get_adverts($con) {
     $advert = [];
     $sql = "
         SELECT 
-               lots.id,
-               lots.title, 
-               lots.start_price,
-               lots.picture,
+               lots.*,
                MAX(bids.sum) AS max_price,
                categories.category
         FROM 
@@ -110,19 +109,75 @@ function get_adverts($con) {
         $advert = mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
     return $advert;
+}
+//
 
+function get_lot_id($con, $lot_id) {
+    $advert = [];
+    $sql = "
+        SELECT 
+               lots.*,
+               MAX(bids.sum) AS max_price,
+               categories.category
+        FROM 
+             lots
+        JOIN
+               categories
+                 ON lots.category_id = categories.id
+        LEFT JOIN 
+               bids 
+                 ON lots.id = bids.lot_id
+        WHERE 
+              lots.end_time > NOW() AND lots.id = ?
+        GROUP BY 
+              lots.id
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$lot_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $advert = mysqli_fetch_assoc($res);
+    }
+    return $advert;
 }
 
-
-/** Функция выводит данные из бд
- * @param $sql
- * @param $con
- * @return array/null
- */
-function get_assoc($sql, $con) {
-    $result = mysqli_query($con, $sql);
-
-    if ($result) {
-        return mysqli_fetch_assoc($result);
+function check_category($con, $category_id) {
+    $sql = "
+        SELECT 
+               categories.*
+               
+        FROM 
+               categories
+        WHERE 
+               categories.id = ?
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$category_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        return mysqli_num_rows($res) > 0;
     }
+
+    return false;
+}
+
+//
+function check_email($con, $email)
+{
+    $sql = "
+        SELECT 
+               users.email
+               
+        FROM 
+               users
+        WHERE 
+               users.email = ?
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $email = mysqli_fetch_assoc($res);
+    }
+    return $email;
 }

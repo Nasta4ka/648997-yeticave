@@ -11,7 +11,6 @@
  */
 function db_get_prepare_stmt($con, $sql, $data = []) {
     $stmt = mysqli_prepare($con, $sql);
-
     if ($data) {
         $types = '';
         $stmt_data = [];
