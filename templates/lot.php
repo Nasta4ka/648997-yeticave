@@ -1,3 +1,4 @@
+<?php $user_logged = isset($_SESSION['user']) ? $_SESSION['user'] : NULL ; ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,10 +23,15 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-                <?php if($is_auth === 1): ?>
-                    <div class="user-menu__logged">
-                        <p><?= $user_name; ?></p>
-                    </div>
+                <?php if(!empty($user_logged)) : ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="#"><?= $user_logged['name']; ?></a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="../logout.php">Выход</a>
+                        </li>
+                    </ul>
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
@@ -36,7 +42,6 @@
                         </li>
                     </ul>
                 <?php endif; ?>
-
             </nav>
         </div>
     </header>
@@ -65,11 +70,11 @@
                     <p class="lot-item__description"><?= esc($lot['description']); ?></p>
                 </div>
                 <div class="lot-item__right">
-                    <div class="lot-item__state">
+                    <div class="lot-item__state" style="<?= empty($user_logged) ? 'display: none' : '' ;?>" >
                         <div class="lot-item__timer timer">
                             <?= lot_expire($lot['end_time']); ?>
                         </div>
-                        <div class="lot-item__cost-state">
+                        <div class="lot-item__cost-state" >
                             <div class="lot-item__rate">
                                 <span class="lot-item__amount">Текущая цена</span>
                                 <span class="lot-item__cost"><?=  isset($lot['max_price']) ? esc($lot['max_price']) : esc($lot['start_price'] + $lot['rate']); ?></span>

@@ -1,8 +1,6 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-$is_auth = rand(0, 1);
-$user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $categories =  get_categories($con);
 $user = [];
 $errors = [];
@@ -71,8 +69,6 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $sign_up_content = include_template('sign_up.php', [
     'categories' => $categories,
     'errors' => $errors,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'user' => $user
 ]);
 print($sign_up_content);

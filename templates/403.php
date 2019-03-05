@@ -3,9 +3,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход</title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <title>Ошибка 403</title>
+    <link href="../css/normalize.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
             <a class="main-header__logo" href="index.php">
-                <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
+                <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
                 <input type="search" name="search" placeholder="Поиск лота">
@@ -51,24 +51,15 @@
             <ul class="nav__list container">
                 <?php foreach ($categories as $value): ?>
                     <li class="nav__item">
-                        <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                        <a href="../pages/all-lots.html"><?= esc($value['category']); ?></a>
                     </li>
                 <?php endforeach; ?>
+            </ul>
         </nav>
-        <form class="form container <?= count($errors) > 0 ? 'form--invalid' : ''; ?>" action="login.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
-            <h2>Вход</h2>
-            <div class="form__item <?= isset($errors['email']) ? 'form__item--invalid' : ''; ?>"> <!-- form__item--invalid -->
-                <label for="email">E-mail*</label>
-                <input id="email" type="text" name="email" placeholder="Введите e-mail"  value="<?= isset($auth['email']) ? esc($auth['email']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['email']) ? $errors['email'] : ''; ?></span>
-            </div>
-            <div class="form__item form__item--last <?= isset($errors['password']) ? 'form__item--invalid' : ''; ?>">
-                <label for="password">Пароль*</label>
-                <input id="password" type="text" name="password" placeholder="Введите пароль"  value="<?= isset($auth['password']) ? esc($auth['password']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['password']) ? $errors['password'] : ''; ?></span>
-            </div>
-            <button type="submit" class="button">Войти</button>
-        </form>
+        <section class="lot-item container">
+            <h2>403 Доступ запрещен</h2>
+            <p>Ошибка запрета доступа</p>
+        </section>
     </main>
 
 </div>
@@ -78,7 +69,7 @@
         <ul class="nav__list container">
             <?php foreach ($categories as $value): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                    <a href="../pages/all-lots.html"><?= esc($value['category']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

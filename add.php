@@ -1,12 +1,15 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-$is_auth = rand(0, 1);
-$user_name = 'Nasta4ka'; // укажите здесь ваше имя
+
 $categories =  get_categories($con);
 $lot = [];
 $errors = [];
 
+if (empty($_SESSION['user'])) {
+    http_response_code(403);
+    header('Location: 403.php');
+}
 
 if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
@@ -72,7 +75,6 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $add_content = include_template('add.php', [
         'categories' => $categories,
         'errors' => $errors,
-        'is_auth' => $is_auth,
-        'user_name' => $user_name,
-        'lot' => $lot]);
+        'lot' => $lot
+    ]);
     print($add_content);
