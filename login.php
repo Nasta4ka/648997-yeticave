@@ -7,6 +7,7 @@ $auth =[];
 
 if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $auth = $_POST;
+    $auth['email'] = trim($auth['email']);
     $errors_list = [
         'email' => 'Введите e-mail',
         'password' => 'Введите пароль',
