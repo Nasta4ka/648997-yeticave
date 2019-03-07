@@ -110,8 +110,12 @@ function get_adverts($con) {
     }
     return $advert;
 }
-//
 
+/** Функция извлекает из бд лот по id
+ * @param string $con - подключение
+ * @param string/int $lot_id - id лота
+ * @return array - массив с данными
+ */
 function get_lot_id($con, $lot_id) {
     $advert = [];
     $sql = "
@@ -141,6 +145,12 @@ function get_lot_id($con, $lot_id) {
     return $advert;
 }
 
+
+/** Функция проверяет наличие категории в бд по id
+ * @param string $con - подключение
+ * @param string/int $category_id - id категории
+ * @return array - массив с данными
+ */
 function check_category($con, $category_id) {
     $sql = "
         SELECT 
@@ -161,7 +171,11 @@ function check_category($con, $category_id) {
     return false;
 }
 
-//
+/** Функция проверяет наличие email в бд
+ * @param string $con - подключение
+ * @param string $email - исходный email введённый пользователем
+ * @return array - массив с данными
+ */
 function check_email($con, $email)
 {
     $sql = "
@@ -180,4 +194,48 @@ function check_email($con, $email)
         $email = mysqli_fetch_assoc($res);
     }
     return $email;
+}
+
+/** Функция извлекает ставки из бд
+ * @param string $con - подключение
+ * @param string/int $lot_id - id лота, к которому привязаны ставки
+ * @return array - массив с данными
+ */
+function get_bids($con, $lot_id) {
+    $bids = [];
+    $sql = "
+        SELECT 
+               bids.*,
+               users.name
+        FROM 
+             bids
+        JOIN
+               users
+                 ON bids.user_id = users.id
+        WHERE 
+              bids.lot_id = ?
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$lot_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $bids = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $bids;
+}
+
+/** Функция посчитывает минуты в значениях меньше часа, часы - в значениях меньше суток
+ * @param string/int $seconds - количество секунд
+ * @return str
+ */
+function time_count($seconds) {
+if ($seconds < 3600) {
+    $time = round($seconds/60) . ' м. назад';
+}
+
+if ($seconds >= 3600) {
+    $time = round(($seconds / 60) / 60) . ' ч. назад';
+}
+
+    return $time;
 }

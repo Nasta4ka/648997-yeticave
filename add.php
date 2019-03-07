@@ -5,6 +5,8 @@ require_once 'functions.php';
 $categories =  get_categories($con);
 $lot = [];
 $errors = [];
+$user_logged = isset($_SESSION['user']) ? $_SESSION['user'] : NULL ;
+$user_id = $user_logged['id'];
 
 if (empty($_SESSION['user'])) {
     http_response_code(403);
@@ -63,9 +65,9 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         move_uploaded_file($tmp_name, 'img/' . $path);
         $lot['picture'] = 'img/' . $path;
-        $lot_data = [$lot['title'], $lot['category_id'], $lot['description'], $lot['picture'], $lot['start_price'], $lot['rate'], $lot['end_time']];
+        $lot_data = [$lot['title'], $lot['category_id'], $lot['description'], $lot['picture'], $lot['start_price'], $lot['rate'], $lot['end_time'], $user_id];
 
-        $sql = "INSERT INTO lots (title, category_id, description, picture, start_price, rate, end_time, author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, 1)";
+        $sql = "INSERT INTO lots (title, category_id, description, picture, start_price, rate, end_time, author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = db_get_prepare_stmt($con, $sql, $lot_data);
         mysqli_stmt_execute($stmt);
 

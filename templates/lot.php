@@ -77,74 +77,33 @@
                         <div class="lot-item__cost-state" >
                             <div class="lot-item__rate">
                                 <span class="lot-item__amount">Текущая цена</span>
-                                <span class="lot-item__cost"><?=  isset($lot['max_price']) ? esc($lot['max_price']) : esc($lot['start_price'] + $lot['rate']); ?></span>
+                                <span class="lot-item__cost"><?=  isset($lot['max_price']) ? esc($lot['max_price']) : esc($lot['start_price']); ?></span>
                             </div>
                             <div class="lot-item__min-cost">
-                                Мин. ставка <span><?= esc($lot['rate'] + $lot['max_price'] ) ; ?></span>
+                                Мин. ставка <span><?=  isset($lot['max_price']) ? esc($lot['max_price']) + $lot['rate'] : esc($lot['start_price']) + $lot['rate'] ; ?></span>
                             </div>
                         </div>
-                        <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                            <p class="lot-item__form-item form__item form__item--invalid">
-                                <label for="cost">Ваша ставка</label>
-                                <input id="cost" type="text" name="cost" placeholder="<?= esc($lot['rate'] + $lot['max_price'] ) ; ?>">
-                                <span class="form__error">Введите наименование лота</span>
+
+                        <form class="lot-item__form" action="lot.php?lot_id=<?=$_GET['lot_id']?>" method="post" enctype="multipart/form-data">
+                            <p class="lot-item__form-item form__item <?= isset($errors['sum']) ? 'form__item--invalid' : ''; ?>">
+                                <label for="sum">Ваша ставка</label>
+                                <input id="sum" type="text" name="sum" placeholder="<?=  isset($lot['max_price']) ? esc($lot['max_price']) + $lot['rate'] : esc($lot['start_price']) + $lot['rate'] ; ?>">
+                                <span class="form__error"><?= isset($errors['sum']) ? $errors['sum'] : ''; ?></span>
                             </p>
                             <button type="submit" class="button">Сделать ставку</button>
                         </form>
+
                     </div>
                     <div class="history">
-                        <h3>История ставок (<span>10</span>)</h3>
+                        <h3>История ставок (<span><?=count($bids);?></span>)</h3>
                         <table class="history__list">
+                            <?php foreach ($bids as $item): ?>
                             <tr class="history__item">
-                                <td class="history__name">Иван</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">5 минут назад</td>
+                                <td class="history__name"><?=$item['name'];?></td>
+                                <td class="history__price"><?=$item['sum'];?></td>
+                                <td class="history__time"><?= time() - strtotime($item['placement_date']) < 86400  ? time_count(time() - strtotime($item['placement_date']))  : $item['placement_date'] ;?></td>
                             </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Константин</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">20 минут назад</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Евгений</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">Час назад</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Игорь</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 08:21</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Енакентий</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 13:20</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Семён</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 12:20</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Илья</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 10:20</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Енакентий</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 13:20</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Семён</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 12:20</td>
-                            </tr>
-                            <tr class="history__item">
-                                <td class="history__name">Илья</td>
-                                <td class="history__price">10 999 р</td>
-                                <td class="history__time">19.03.17 в 10:20</td>
-                            </tr>
+                            <?php endforeach; ?>
                         </table>
                     </div>
                 </div>
