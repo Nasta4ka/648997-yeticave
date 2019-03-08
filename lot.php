@@ -1,17 +1,39 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
+session_start();
 $categories = get_categories($con);
 $lot_id = intval($_GET['lot_id']);
 $lot = get_lot_id($con, $lot_id);
 $user_logged = isset($_SESSION['user']) ? $_SESSION['user'] : NULL ;
 $user_id = intval($user_logged['id']);
 $bids = get_bids($con, $lot_id);
+$errors = [];
+$hide = NULL;
+$bid_users = get_bid_users($con, $lot['id']);
+
+
+ if (!empty($bid_users)) {
+     foreach ($bid_users as $item => $value){
+         $item = array_flip($value);
+         foreach ($item as $k => $v) {
+             if($user_id === $k) {
+                 $hide = 1;
+             }
+         }
+     }
+ }
+
+if ($user_id === $lot['author_id']) {
+    $hide = 1;
+}
+if (strtotime($lot['end_time']) < time()) {
+    $hide = 1;
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($user_logged)) {
     $bid = $_POST;
-    $errors = [];
     $sum = intval($bid['sum']);
     $min_sum = isset($lot['max_price']) ? esc($lot['max_price']) + $lot['rate'] : esc($lot['start_price']) + $lot['rate'];
 
@@ -22,10 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($user_logged)) {
         if ($sum < $min_sum) {
             $errors['sum'] = 'Ставка должна быть не меньше минимальной';
         }
-    }
-
-    if ($user_id === $lot['author_id']) {
-        $errors['sum'] = 'Вы не можете ставить на свой лот';
     }
 
     if (count($errors) === 0) {
@@ -51,8 +69,6 @@ if (!isset($_GET['lot_id'])) {
     exit;
 }
 
-
-
 if (empty($lot)) {
     $lot_content = include_template("error.php",
 
@@ -71,7 +87,8 @@ $lot_content = include_template("lot.php",
         'categories' => $categories,
         'title' => $lot['title'],
         'errors' => $errors,
-        'bids' => $bids
+        'bids' => $bids,
+        'hide' => $hide
     ]);
 
 print($lot_content);

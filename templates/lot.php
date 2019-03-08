@@ -70,7 +70,7 @@
                     <p class="lot-item__description"><?= esc($lot['description']); ?></p>
                 </div>
                 <div class="lot-item__right">
-                    <div class="lot-item__state" style="<?= empty($user_logged) ? 'display: none' : '' ;?>" >
+                    <div class="lot-item__state" style="<?= empty($user_logged) || !empty($hide) ? 'display: none' : '' ;?>" >
                         <div class="lot-item__timer timer">
                             <?= lot_expire($lot['end_time']); ?>
                         </div>

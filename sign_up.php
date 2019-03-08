@@ -1,6 +1,7 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
+session_start();
 $categories =  get_categories($con);
 $user = [];
 $errors = [];
@@ -22,6 +23,7 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     $password = password_hash($user['password'],  PASSWORD_DEFAULT);
+
     if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "E-mail введён некорректно";
     }

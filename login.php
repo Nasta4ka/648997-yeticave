@@ -1,6 +1,7 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
+session_start();
 $categories =  get_categories($con);
 $errors = [];
 $auth =[];
@@ -13,20 +14,25 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'password' => 'Введите пароль',
     ];
 
+    $email = $auth['email'];
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "E-mail введён некорректно";
+    } else {
+        $email_check = check_email($con, $email);
+        if (empty($email_check)) {
+            $errors['email'] = "Пользователь с таким e-mail не найден";
+        } else {
+            $sql = "SELECT * FROM users WHERE email = '$email'";
+            $res = mysqli_query($con, $sql);
+            $user = mysqli_fetch_array($res, MYSQLI_ASSOC);
+        }
+    }
+
+
     foreach ($auth as $key => $value) {
         if (empty($value)) {
             $errors[$key] = $errors_list[$key];
         }
-    }
-
-    $email = $auth['email'];
-    $email_check = check_email($con, $email);
-    if (empty($email_check)) {
-        $errors['email'] = "Пользователь с таким e-mail не найден";
-    } else {
-        $sql = "SELECT * FROM users WHERE email = '$email'";
-        $res = mysqli_query($con, $sql);
-        $user = mysqli_fetch_array($res, MYSQLI_ASSOC);
     }
 
     if (!count($errors) and !empty($user)) {

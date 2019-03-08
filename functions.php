@@ -132,7 +132,7 @@ function get_lot_id($con, $lot_id) {
                bids 
                  ON lots.id = bids.lot_id
         WHERE 
-              lots.end_time > NOW() AND lots.id = ?
+              lots.id = ?
         GROUP BY 
               lots.id
     ";
@@ -223,6 +223,32 @@ function get_bids($con, $lot_id) {
     }
     return $bids;
 }
+
+
+/** Функция извлекает ставки из бд
+ * @param string $con - подключение
+ * @param string/int $lot_id - id лота, к которому привязаны ставки
+ * @return array - массив с данными
+ */
+function get_bid_users($con, $lot_id) {
+    $bid_users =[];
+    $sql = "
+        SELECT 
+               bids.user_id
+        FROM 
+             bids
+        WHERE 
+              bids.lot_id = ?
+    ";
+    $stmt = db_get_prepare_stmt($con, $sql, [$lot_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $bid_users = mysqli_fetch_all($res);
+    }
+    return $bid_users;
+}
+
 
 /** Функция посчитывает минуты в значениях меньше часа, часы - в значениях меньше суток
  * @param string/int $seconds - количество секунд
