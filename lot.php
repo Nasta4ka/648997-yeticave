@@ -1,8 +1,6 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-$is_auth = rand(0, 1);
-$user_name = 'Nasta4ka'; // укажите здесь ваше имя
 $categories = get_categories($con);
 
 if (!isset($_GET['lot_id'])) {
@@ -27,9 +25,8 @@ if (empty($lot)) {
         ['error' => mysqli_error($con),
             'page_content' => '',
             'categories' => $categories,
-            'title' => 'Главная',
-            'is_auth' => $is_auth,
-            'user_name' => $user_name]);
+            'title' => 'Главная'
+        ]);
 
     print($lot_content);
     exit;
@@ -38,8 +35,7 @@ if (empty($lot)) {
 $lot_content = include_template("lot.php",
     ['lot' => $lot,
         'categories' => $categories,
-        'title' => $lot['title'],
-        'is_auth' => $is_auth,
-        'user_name' => $user_name]);
+        'title' => $lot['title']
+    ]);
 
  print($lot_content);

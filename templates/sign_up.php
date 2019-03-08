@@ -1,3 +1,4 @@
+<?php $user_logged = isset($_SESSION['user']) ? $_SESSION['user'] : NULL ; ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,10 +23,15 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-                <?php if($is_auth === 1): ?>
-                    <div class="user-menu__logged">
-                        <p><?= $user_name; ?></p>
-                    </div>
+                <?php if(!empty($user_logged)) : ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="#"><?= $user_logged['name']; ?></a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="../logout.php">Выход</a>
+                        </li>
+                    </ul>
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
@@ -36,7 +42,6 @@
                         </li>
                     </ul>
                 <?php endif; ?>
-
             </nav>
         </div>
     </header>
@@ -55,12 +60,12 @@
             <h2>Регистрация нового аккаунта</h2>
             <div class="form__item <?= isset($errors['email']) ? 'form__item--invalid' : ''; ?>"> <!-- form__item--invalid -->
                 <label for="email">E-mail*</label>
-                <input id="email" type="text" name="email" placeholder="Введите e-mail" required value="<?= isset($user['email']) ? esc($user['email']) : ''  ?>">
+                <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= isset($user['email']) ? esc($user['email']) : ''  ?>">
                 <span class="form__error"><?= isset($errors['email']) ? $errors['email'] : ''; ?></span>
             </div>
             <div class="form__item <?= isset($errors['password']) ? 'form__item--invalid' : ''; ?>">
                 <label for="password">Пароль*</label>
-                <input id="password" type="text" name="password" placeholder="Введите пароль"  required value="<?= isset($user['password']) ? esc($user['password']) : ''  ?>" >
+                <input id="password" type="text" name="password" placeholder="Введите пароль"  value="<?= isset($user['password']) ? esc($user['password']) : ''  ?>" >
                 <span class="form__error"><?= isset($errors['password']) ? $errors['password'] : ''; ?></span>
             </div>
             <div class="form__item  <?= isset($errors['name']) ? 'form__item--invalid' : ''; ?>">
@@ -70,7 +75,7 @@
             </div>
             <div class="form__item  <?= isset($errors['contacts']) ? 'form__item--invalid' : ''; ?>">
                 <label for="contacts">Контактные данные*</label>
-                <textarea id="contacts" name="contacts" placeholder="Напишите как с вами связаться" required> <?= isset($user['contacts']) ? esc($user['contacts']) : ''  ?> </textarea>
+                <textarea id="contacts" name="contacts" placeholder="Напишите как с вами связаться"><?= isset($user['contacts']) ? esc($user['contacts']) : ''  ?></textarea>
                 <span class="form__error"><?= isset($errors['contacts']) ? $errors['contacts'] : ''; ?></span>
             </div>
 

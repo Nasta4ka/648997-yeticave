@@ -3,9 +3,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Добавление лота</title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <title>Ошибка 403</title>
+    <link href="../css/normalize.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
             <a class="main-header__logo" href="index.php">
-                <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
+                <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
                 <input type="search" name="search" placeholder="Поиск лота">
@@ -47,96 +47,29 @@
     </header>
 
     <main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach ($categories as $value): ?>
-                <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </nav>
+        <nav class="nav">
+            <ul class="nav__list container">
+                <?php foreach ($categories as $value): ?>
+                    <li class="nav__item">
+                        <a href="../pages/all-lots.html"><?= esc($value['category']); ?></a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </nav>
+        <section class="lot-item container">
+            <h2>403 Доступ запрещен</h2>
+            <p>Ошибка запрета доступа</p>
+        </section>
+    </main>
 
-    <form class="form form--add-lot container   <?= count($errors) > 0 ? 'form--invalid' : ''; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
-        <h2>Добавление лота</h2>
-        <div class="form__container-two">
-            <div class="form__item <?= isset($errors['title']) ? 'form__item--invalid' : ''; ?>"> <!-- form__item--invalid -->
-                <label for="title">Наименование</label>
-                <input id="title" type="text" name="title" placeholder="Введите наименование лота" value="<?= isset($lot['title']) ? esc($lot['title']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['title']) ? $errors['title'] : ''; ?></span>
-            </div>
-
-            <div class="form__item <?=  isset($errors['category_id']) ? 'form__item--invalid' : '';?>">
-                <label for="category_id">Категория</label>
-                <select id="category_id" name="category_id">
-                    <option>Выберите категорию</option>
-                    <?php foreach ($categories as $category): ?>
-                        <option <?= isset($lot['category_id']) && (int)$lot['category_id'] === (int)$category['id']  ? 'selected' : ''  ?> value="<?= $category['id'] ; ?>">
-                            <?= esc($category['category']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <span class="form__error"><?=  isset($errors['category_id']) ? $errors['category_id'] : ''; ?> </span>
-            </div>
-        </div>
-
-        <div class="form__item form__item--wide <?= isset($errors['description']) ? 'form__item--invalid' : ''; ?>">
-            <label for="description">Описание</label>
-            <textarea id="description" name="description" placeholder="Напишите описание лота"><?= isset($lot['description']) ? esc($lot['description']) : ''  ?></textarea>
-            <span class="form__error"><?= isset($errors['description']) ? $errors['description'] : ''; ?></span>
-        </div>
-
-        <div class="form__item form__item--file <?= isset($errors['picture']) ? 'form__item--invalid' : ''; ?> form__item--uploaded"> <!-- form__item--uploaded -->
-            <label>Изображение</label>
-            <div class="preview">
-                <button class="preview__remove" type="button">x</button>
-                <div class="preview__img">
-                    <img src="" width="113" height="113" alt="Изображение лота">
-                </div>
-            </div>
-            <div class="form__input-file">
-                <input class="visually-hidden" type="file" id="photo2" name="picture" value="">
-                <label for="photo2">
-                    <span>+ Добавить</span>
-                </label>
-            </div>
-            <span class="form__error"><?= isset($errors['picture']) ? $errors['picture'] : ''; ?> </span>
-        </div>
-
-
-        <div class="form__container-three">
-            <div class="form__item form__item--small <?= isset($errors['start_price']) ? 'form__item--invalid' : ''; ?>">
-                <label for="start_price">Начальная цена</label>
-                <input id="start_price" type="number" name="start_price" placeholder="0" value="<?= isset($lot['start_price']) ? intval($lot['start_price']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['start_price']) ? $errors['start_price'] : ''; ?> </span>
-            </div>
-
-            <div class="form__item form__item--small <?= isset($errors['rate']) ? 'form__item--invalid' : ''; ?>">
-                <label for="lot-step">Шаг ставки</label>
-                <input id="lot-step" type="number" name="rate" placeholder="0" value="<?= isset($lot['rate']) ? intval($lot['rate']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['rate']) ? $errors['rate'] : ''; ?> </span>
-            </div>
-
-            <div class="form__item <?= isset($errors['end_time']) ? 'form__item--invalid' : ''; ?>">
-                <label for="end_time">Дата окончания торгов</label>
-                <input class="form__input-date" id="end_time" type="date" name="end_time" value="<?= isset($lot['end_time']) ? esc($lot['end_time']) : ''  ?>">
-                <span class="form__error"><?= isset($errors['end_time']) ? $errors['end_time'] : ''; ?> </span>
-            </div>
-
-        </div>
-        <span class="form__error form__error--bottom"><?= count($errors) > 0 ? $errors['bottom'] : ''; ?></php></span>
-        <button type="submit" class="button">Добавить лот</button>
-    </form>
-</main>
 </div>
 
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <!--заполните этот список из массива категорий-->
             <?php foreach ($categories as $value): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
+                    <a href="../pages/all-lots.html"><?= esc($value['category']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -168,7 +101,7 @@
                 <svg width="27" height="27" viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><circle stroke="#879296" fill="none" cx="13.5" cy="13.5" r="12.666"/><path fill="#879296" d="M13.92 18.07c.142-.016.278-.074.39-.166.077-.107.118-.237.116-.37 0 0 0-1.13.516-1.296.517-.165 1.208 1.09 1.95 1.58.276.213.624.314.973.28h1.95s.973-.057.525-.837c-.38-.62-.865-1.17-1.432-1.626-1.208-1.1-1.043-.916.41-2.816.886-1.16 1.236-1.86 1.13-2.163-.108-.302-.76-.214-.76-.214h-2.164c-.092-.026-.19-.026-.282 0-.083.058-.15.135-.195.225-.224.57-.49 1.125-.8 1.656-.973 1.61-1.344 1.697-1.51 1.59-.37-.234-.272-.975-.272-1.433 0-1.56.243-2.202-.468-2.377-.32-.075-.647-.108-.974-.098-.604-.052-1.213.01-1.793.186-.243.116-.438.38-.32.4.245.018.474.13.642.31.152.303.225.638.214.975 0 0 .127 1.832-.302 2.056-.43.223-.692-.167-1.55-1.618-.29-.506-.547-1.03-.77-1.57-.038-.09-.098-.17-.174-.233-.1-.065-.214-.108-.332-.128H6.485s-.312 0-.42.137c-.106.135 0 .36 0 .36.87 2 2.022 3.868 3.42 5.543.923.996 2.21 1.573 3.567 1.598z"/></svg>
             </a>
         </div>
-        <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
+        <a class="main-footer__add-lot button" href="add.php">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
             <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">

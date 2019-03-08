@@ -1,16 +1,22 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-$is_auth = rand(0, 1);
-$user_name = 'Nasta4ka'; // укажите здесь ваше имя
+
 $categories =  get_categories($con);
 $lot = [];
 $errors = [];
 
+if (empty($_SESSION['user'])) {
+    http_response_code(403);
+    header('Location: 403.php');
+}
 
 if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
     $required = ['title', 'category_id', 'description', 'picture', 'start_price', 'rate', 'end_time'];
+    $lot['title'] = trim($lot['title']);
+    $lot['description'] = trim($lot['description']);
+
     $errors_list = [
         'title' => 'Введите наименование лота',
         'category_id' => 'Выберите категорию',
@@ -66,13 +72,15 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $lot_id = mysqli_insert_id($con);
             header('Location: lot.php?lot_id=' . $lot_id);
     }
+    else {
+        $errors['bottom'] = $errors_list['bottom'];
+    }
 }
 
 
     $add_content = include_template('add.php', [
         'categories' => $categories,
         'errors' => $errors,
-        'is_auth' => $is_auth,
-        'user_name' => $user_name,
-        'lot' => $lot]);
+        'lot' => $lot
+    ]);
     print($add_content);
