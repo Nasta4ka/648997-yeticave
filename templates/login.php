@@ -64,7 +64,7 @@
             </div>
             <div class="form__item form__item--last <?= isset($errors['password']) ? 'form__item--invalid' : ''; ?>">
                 <label for="password">Пароль*</label>
-                <input id="password" type="text" name="password" placeholder="Введите пароль"  value="<?= isset($auth['password']) ? esc($auth['password']) : ''  ?>">
+                <input id="password" type="password" name="password" placeholder="Введите пароль"  value="<?= isset($auth['password']) ? esc($auth['password']) : ''  ?>">
                 <span class="form__error"><?= isset($errors['password']) ? $errors['password'] : ''; ?></span>
             </div>
             <button type="submit" class="button">Войти</button>

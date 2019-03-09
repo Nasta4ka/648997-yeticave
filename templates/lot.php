@@ -70,7 +70,7 @@
                     <p class="lot-item__description"><?= esc($lot['description']); ?></p>
                 </div>
                 <div class="lot-item__right">
-                    <div class="lot-item__state" style="<?= empty($user_logged) || !empty($hide) ? 'display: none' : '' ;?>" >
+                    <div class="lot-item__state">
                         <div class="lot-item__timer timer">
                             <?= lot_expire($lot['end_time']); ?>
                         </div>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
 
-                        <form class="lot-item__form" action="lot.php?lot_id=<?=$_GET['lot_id']?>" method="post" enctype="multipart/form-data">
+                        <form class="lot-item__form" action="lot.php?lot_id=<?=$_GET['lot_id']?>" method="post" enctype="multipart/form-data" style="<?= empty($user_logged) || !empty($hide) ? 'display: none' : '' ;?>">
                             <p class="lot-item__form-item form__item <?= isset($errors['sum']) ? 'form__item--invalid' : ''; ?>">
                                 <label for="sum">Ваша ставка</label>
                                 <input id="sum" type="text" name="sum" placeholder="<?=  isset($lot['max_price']) ? esc($lot['max_price']) + $lot['rate'] : esc($lot['start_price']) + $lot['rate'] ; ?>">
