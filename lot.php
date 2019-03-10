@@ -3,8 +3,38 @@ require_once 'init.php';
 require_once 'functions.php';
 session_start();
 $categories = get_categories($con);
+
+
+if (!isset($_GET['lot_id'])) {
+    $lot_content = include_template("error.php",
+
+        ['error' => mysqli_error($con),
+            'page_content' => '',
+            'categories' => $categories,
+            'title' => 'Главная'
+        ]);
+
+    print($lot_content);
+    exit;
+}
+
 $lot_id = intval($_GET['lot_id']);
 $lot = get_lot_id($con, $lot_id);
+
+if (empty($lot)) {
+    $lot_content = include_template("error.php",
+
+        ['error' => mysqli_error($con),
+            'page_content' => '',
+            'categories' => $categories,
+            'title' => 'Главная'
+        ]);
+
+    print($lot_content);
+    exit;
+}
+
+
 $user_logged = isset($_SESSION['user']) ? $_SESSION['user'] : NULL ;
 $user_id = intval($user_logged['id']);
 $bids = get_bids($con, $lot_id);
@@ -55,32 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($user_logged)) {
     }
 }
 
-
-if (!isset($_GET['lot_id'])) {
-      $lot_content = include_template("error.php",
-
-        ['error' => mysqli_error($con),
-            'page_content' => '',
-            'categories' => $categories,
-            'title' => 'Главная'
-        ]);
-
-    print($lot_content);
-    exit;
-}
-
-if (empty($lot)) {
-    $lot_content = include_template("error.php",
-
-        ['error' => mysqli_error($con),
-            'page_content' => '',
-            'categories' => $categories,
-            'title' => 'Главная'
-        ]);
-
-    print($lot_content);
-    exit;
-}
 
 $lot_content = include_template("lot.php",
     ['lot' => $lot,

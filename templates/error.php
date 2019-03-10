@@ -23,24 +23,27 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-                <?php if(!empty($user_logged)) : ?>
-                    <ul class="user-menu__list">
-                        <li class="user-menu__item">
-                            <a href="#"><?= $user_logged['name']; ?></a>
-                        </li>
-                        <li class="user-menu__item">
-                            <a href="../logout.php">Выход</a>
-                        </li>
-                    </ul>
-                <?php else: ?>
-                    <ul class="user-menu__list">
-                        <li class="user-menu__item">
-                            <a href="sign_up.php">Регистрация</a>
-                        </li>
-                        <li class="user-menu__item">
-                            <a href="login.php">Вход</a>
-                        </li>
-                    </ul>
+                <nav class="user-menu">
+                    <?php if(!empty($user_logged)) : ?>
+                        <ul class="user-menu__list">
+                            <li class="user-menu__item">
+                                <?= esc($user_logged['name']); ?>
+                            </li>
+                            <li class="user-menu__item">
+                                <a href="/logout.php">Выход</a>
+                            </li>
+                        </ul>
+                    <?php else: ?>
+                        <ul class="user-menu__list">
+                            <li class="user-menu__item">
+                                <a href="sign_up.php">Регистрация</a>
+                            </li>
+                            <li class="user-menu__item">
+                                <a href="login.php">Вход</a>
+                            </li>
+                        </ul>
+                    <?php endif; ?>
+                </nav>
                 <?php endif; ?>
             </nav>
         </div>

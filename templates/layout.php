@@ -26,10 +26,10 @@
                 <?php if(!empty($user_logged)) : ?>
                     <ul class="user-menu__list">
                        <li class="user-menu__item">
-                            <a href="#"><?= $user_logged['name']; ?></a>
+                           <?= esc($user_logged['name']); ?>
                        </li>
                         <li class="user-menu__item">
-                            <a href="../logout.php">Выход</a>
+                            <a href="/logout.php">Выход</a>
                         </li>
                     </ul>
                 <?php else: ?>

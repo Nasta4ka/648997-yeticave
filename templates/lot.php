@@ -26,10 +26,10 @@
                 <?php if(!empty($user_logged)) : ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="#"><?= $user_logged['name']; ?></a>
+                            <?= esc($user_logged['name']); ?>
                         </li>
                         <li class="user-menu__item">
-                            <a href="../logout.php">Выход</a>
+                            <a href="/logout.php">Выход</a>
                         </li>
                     </ul>
                 <?php else: ?>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <?php if (!empty($user_logged)  && empty($hide)): ?>
-                        <form class="lot-item__form" action="lot.php?lot_id=<?=$_GET['lot_id']?>" method="post" enctype="multipart/form-data">
+                        <form class="lot-item__form" action="lot.php?lot_id=<?=esc($_GET['lot_id'])?>" method="post" enctype="multipart/form-data">
                             <p class="lot-item__form-item form__item <?= isset($errors['sum']) ? 'form__item--invalid' : ''; ?>">
                                 <label for="sum">Ваша ставка</label>
                                 <input id="sum" type="text" name="sum" placeholder="<?=  isset($lot['max_price']) ? esc($lot['max_price']) + $lot['rate'] : esc($lot['start_price']) + $lot['rate'] ; ?>">
