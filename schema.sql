@@ -43,3 +43,4 @@ CREATE INDEX winner_id ON lots(winner_id);
 CREATE INDEX category_id ON lots(category_id);
 CREATE INDEX user_id ON bids(user_id);
 CREATE INDEX lot_id ON bids(lot_id);
+CREATE FULLTEXT INDEX title_descr ON lots (title, description);
