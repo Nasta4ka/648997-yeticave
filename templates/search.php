@@ -3,9 +3,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>DC Ply Mens 2016/2017 Snowboard</title>
-    <link href="../css/normalize.min.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
+    <title>Результаты поиска</title>
+    <link href="css/normalize.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -23,27 +23,24 @@
             </form>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
             <nav class="user-menu">
-                <nav class="user-menu">
-                    <?php if(!empty($user_logged)) : ?>
-                        <ul class="user-menu__list">
-                            <li class="user-menu__item">
-                                <?= esc($user_logged['name']); ?>
-                            </li>
-                            <li class="user-menu__item">
-                                <a href="/logout.php">Выход</a>
-                            </li>
-                        </ul>
-                    <?php else: ?>
-                        <ul class="user-menu__list">
-                            <li class="user-menu__item">
-                                <a href="sign_up.php">Регистрация</a>
-                            </li>
-                            <li class="user-menu__item">
-                                <a href="login.php">Вход</a>
-                            </li>
-                        </ul>
-                    <?php endif; ?>
-                </nav>
+                <?php if(!empty($user_logged)) : ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <?= esc($user_logged['name']); ?>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="/logout.php">Выход</a>
+                        </li>
+                    </ul>
+                <?php else: ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="sign_up.php">Регистрация</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="login.php">Вход</a>
+                        </li>
+                    </ul>
                 <?php endif; ?>
             </nav>
         </div>
@@ -52,6 +49,7 @@
     <main>
         <nav class="nav">
             <ul class="nav__list container">
+                <!--заполните этот список из массива категорий-->
                 <?php foreach ($categories as $value): ?>
                     <li class="nav__item">
                         <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
@@ -59,10 +57,40 @@
                 <?php endforeach; ?>
             </ul>
         </nav>
-        <section class="lot-item container">
-            <h2>404 Страница не найдена</h2>
-            <p>Данной страницы не существует на сайте.</p>
-        </section>
+
+        <div class="container">
+            <section class="lots">
+                <h2>Результаты поиска по запросу «<span>Union</span>»</h2>
+                <ul class="lots__list">
+                    <li class="lots__item lot">
+                        <div class="lot__image">
+                            <img src="img/lot-1.jpg" width="350" height="260" alt="Сноуборд">
+                        </div>
+                        <div class="lot__info">
+                            <span class="lot__category">Доски и лыжи</span>
+                            <h3 class="lot__title"><a class="text-link" href="lot.html">2014 Rossignol District Snowboard</a></h3>
+                            <div class="lot__state">
+                                <div class="lot__rate">
+                                    <span class="lot__amount">Стартовая цена</span>
+                                    <span class="lot__cost">10 999<b class="rub">р</b></span>
+                                </div>
+                                <div class="lot__timer timer">
+                                    16:54:12
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <ul class="pagination-list">
+                <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
+                <li class="pagination-item pagination-item-active"><a>1</a></li>
+                <li class="pagination-item"><a href="#">2</a></li>
+                <li class="pagination-item"><a href="#">3</a></li>
+                <li class="pagination-item"><a href="#">4</a></li>
+                <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
+            </ul>
+        </div>
     </main>
 
 </div>
@@ -70,6 +98,7 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
+            <!--заполните этот список из массива категорий-->
             <?php foreach ($categories as $value): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html"><?= esc($value['category']); ?></a>
@@ -104,7 +133,7 @@
                 <svg width="27" height="27" viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><circle stroke="#879296" fill="none" cx="13.5" cy="13.5" r="12.666"/><path fill="#879296" d="M13.92 18.07c.142-.016.278-.074.39-.166.077-.107.118-.237.116-.37 0 0 0-1.13.516-1.296.517-.165 1.208 1.09 1.95 1.58.276.213.624.314.973.28h1.95s.973-.057.525-.837c-.38-.62-.865-1.17-1.432-1.626-1.208-1.1-1.043-.916.41-2.816.886-1.16 1.236-1.86 1.13-2.163-.108-.302-.76-.214-.76-.214h-2.164c-.092-.026-.19-.026-.282 0-.083.058-.15.135-.195.225-.224.57-.49 1.125-.8 1.656-.973 1.61-1.344 1.697-1.51 1.59-.37-.234-.272-.975-.272-1.433 0-1.56.243-2.202-.468-2.377-.32-.075-.647-.108-.974-.098-.604-.052-1.213.01-1.793.186-.243.116-.438.38-.32.4.245.018.474.13.642.31.152.303.225.638.214.975 0 0 .127 1.832-.302 2.056-.43.223-.692-.167-1.55-1.618-.29-.506-.547-1.03-.77-1.57-.038-.09-.098-.17-.174-.233-.1-.065-.214-.108-.332-.128H6.485s-.312 0-.42.137c-.106.135 0 .36 0 .36.87 2 2.022 3.868 3.42 5.543.923.996 2.21 1.573 3.567 1.598z"/></svg>
             </a>
         </div>
-        <a class="main-footer__add-lot button" href="add.php">Добавить лот</a>
+        <a class="main-footer__add-lot button" href="add-lot.html">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
             <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">

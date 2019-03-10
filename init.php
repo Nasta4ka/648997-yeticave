@@ -1,4 +1,6 @@
 <?php
+session_start();
+date_default_timezone_set('Europe/Moscow');
 $con = mysqli_connect('localhost', 'root', '', '648997-yeticave');
 
 if ($con === false) {
@@ -8,4 +10,3 @@ if ($con === false) {
 
 mysqli_set_charset($con, 'utf8');
 
-session_start();

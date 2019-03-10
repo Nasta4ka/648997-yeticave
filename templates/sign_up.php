@@ -26,10 +26,10 @@
                 <?php if(!empty($user_logged)) : ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="#"><?= $user_logged['name']; ?></a>
+                            <?= esc($user_logged['name']); ?>
                         </li>
                         <li class="user-menu__item">
-                            <a href="../logout.php">Выход</a>
+                            <a href="/logout.php">Выход</a>
                         </li>
                     </ul>
                 <?php else: ?>
@@ -65,7 +65,7 @@
             </div>
             <div class="form__item <?= isset($errors['password']) ? 'form__item--invalid' : ''; ?>">
                 <label for="password">Пароль*</label>
-                <input id="password" type="text" name="password" placeholder="Введите пароль"  value="<?= isset($user['password']) ? esc($user['password']) : ''  ?>" >
+                <input id="password" type="password" name="password" placeholder="Введите пароль"  value="<?= isset($user['password']) ? esc($user['password']) : ''  ?>" >
                 <span class="form__error"><?= isset($errors['password']) ? $errors['password'] : ''; ?></span>
             </div>
             <div class="form__item  <?= isset($errors['name']) ? 'form__item--invalid' : ''; ?>">
