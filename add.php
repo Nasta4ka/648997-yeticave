@@ -1,7 +1,6 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-session_start();
 $categories =  get_categories($con);
 $lot = [];
 $errors = [];
@@ -36,21 +35,21 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (!check_category($con, $lot['category_id'])) {
+    if (!empty($lot['category_id']) && !check_category($con, $lot['category_id'])) {
         $errors['category_id'] = "Выберите категорию";
     }
-    if (intval($lot['start_price']) < 0) {
+    if (!empty($lot['start_price']) && intval($lot['start_price']) < 0) {
         $errors['start_price'] = "Введите положительное число";
     }
-    if (intval($lot['rate']) < 0) {
+    if (!empty($lot['rate']) && intval($lot['rate']) < 0) {
         $errors['rate'] = "Введите положительное число";
     }
 
-    if (strtotime($lot['end_time']) - time() <= 60 * 60 * 24) {
+    if (!empty($lot['end_time']) && strtotime($lot['end_time']) - time() <= 60 * 60 * 24) {
         $errors['end_time'] = "Указанная дата должна быть больше текущей даты хотя бы на один день.";
     }
 
-    if (empty($_FILES['picture']['name'])) {
+    if (empty($_FILES['picture']) && empty($_FILES['picture']['name'])) {
         $errors['picture'] = $errors_list['picture'];
     } else {
         $file_type = mime_content_type($_FILES['picture']['tmp_name']);

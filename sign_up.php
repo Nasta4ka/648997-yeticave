@@ -1,7 +1,6 @@
 <?php
 require_once 'init.php';
 require_once 'functions.php';
-session_start();
 $categories =  get_categories($con);
 $user = [];
 $errors = [];
@@ -39,7 +38,7 @@ if(empty($errors['mail'])) {
         }
     }
     if (count($errors) === 0){
-        $password = password_hash($user['password'],  PASSWORD_DEFAULT);Ы
+        $password = password_hash($user['password'],  PASSWORD_DEFAULT);
         if (!empty($_FILES['avatar']['name'])){
             $tmp_name = $_FILES['avatar']['tmp_name'];
             $path = $_FILES['avatar']['name'];
