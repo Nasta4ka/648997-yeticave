@@ -49,7 +49,7 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['end_time'] = "Указанная дата должна быть больше текущей даты хотя бы на один день.";
     }
 
-    if (empty($_FILES['picture']) && empty($_FILES['picture']['name'])) {
+    if (empty($_FILES['picture']) || empty($_FILES['picture']['name'])) {
         $errors['picture'] = $errors_list['picture'];
     } else {
         $file_type = mime_content_type($_FILES['picture']['tmp_name']);
